@@ -8,26 +8,18 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 interface Navigator {
     val startDestination: AppDestination
-    val state: Flow<NavigationEvent>
+    val state: Flow<AppDestination>
 
-    suspend fun navigate(destination: AppDestination, navOptions: NavOptionsBuilder.() -> Unit = {})
-    suspend fun back()
+    suspend fun navigate(destination: AppDestination)
 }
 
 class AppNavigator(
     override val startDestination: AppDestination
 ) : Navigator {
-    private val _state = Channel<NavigationEvent>()
-    override val state: Flow<NavigationEvent> = _state.receiveAsFlow()
+    private val _state = Channel<AppDestination>()
+    override val state: Flow<AppDestination> = _state.receiveAsFlow()
 
     override suspend fun navigate(
         destination: AppDestination,
-        navOptions: NavOptionsBuilder.() -> Unit
-    ) {
-        _state.send(NavigationEvent.Navigate(destination, navOptions))
-    }
-
-    override suspend fun back() {
-        _state.send(NavigationEvent.Back)
-    }
+    ) = _state.send(destination)
 }

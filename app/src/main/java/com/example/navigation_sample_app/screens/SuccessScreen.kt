@@ -1,6 +1,7 @@
 package com.example.navigation_sample_app.screens
 
 import AppDestination
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,11 @@ internal fun SuccessScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
+    BackHandler {
+        coroutineScope.launch {
+            navigator.navigate(AppDestination.FirstPartyEFTManual)
+        }
+    }
 
     SuccessScreen(
         onClose = {

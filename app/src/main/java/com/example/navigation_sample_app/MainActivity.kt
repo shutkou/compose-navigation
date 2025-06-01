@@ -20,11 +20,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navState = rememberNavigationState()
             val navigator = AppNavigator(startDestination = AppDestination.BSLanding)
-            ObserveNavEvents(flow = navigator.state) { event ->
-                when (event) {
-                    is NavigationEvent.Navigate -> navState.navigate(event.destination)
-                    NavigationEvent.Back -> navState.navController.popBackStack()
-                }
+
+            ObserveNavEvents(flow = navigator.state) { destination ->
+                 navState.navigate(destination)
             }
 
             NavigationsampleappTheme {

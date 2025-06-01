@@ -11,6 +11,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.toRoute
 import com.example.navigation_sample_app.Navigator
 import com.example.navigation_sample_app.screens.FTFScreen
 import com.example.navigation_sample_app.screens.Finicity1PScreen
@@ -92,6 +93,7 @@ fun NavGraphBuilder.reviewRoute(
     currentNavState: List<NavBackStackEntry>?
 ) {
     composable<AppDestination.Review> {
+        val args = it.toRoute<AppDestination.Review>()
         ReviewScreen(navigator)
         DebugNavStateElement(currentNavState)
     }
