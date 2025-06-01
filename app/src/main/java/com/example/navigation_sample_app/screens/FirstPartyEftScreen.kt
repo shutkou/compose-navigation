@@ -6,32 +6,46 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import com.example.navigation_sample_app.Navigator
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun FirstPartyEftScreen(
-    onNavigate: (AppDestination) -> Unit
+    navigator: Navigator
 ) {
+
+    val coroutineScope = rememberCoroutineScope()
+
     FirstPartyEftScreen(
         onClose = {
-            onNavigate(
-                AppDestination.BSLanding
-            )
+            coroutineScope.launch {
+                navigator.navigate(
+                    AppDestination.BSLanding
+                )
+            }
         },
         onBack = {
-            onNavigate(
-                AppDestination.BSLanding
-            )
+            coroutineScope.launch {
+                navigator.navigate(
+                    AppDestination.BSLanding
+                )
+            }
         },
         onManual = {
-            onNavigate(
-                AppDestination.FirstPartyEFTManual
-            )
+            coroutineScope.launch {
+                navigator.navigate(
+                    AppDestination.FirstPartyEFTManual
+                )
+            }
         },
         onFinicity = {
-            onNavigate(
-                AppDestination.FirstPartyFinicity
-            )
+            coroutineScope.launch {
+                navigator.navigate(
+                    AppDestination.FirstPartyFinicity
+                )
+            }
         }
     )
 }
@@ -46,8 +60,14 @@ private fun FirstPartyEftScreen(
 ) {
     BaseScreen(title, onClose, onNext = null, onBack) {
         Column {
-            Text("Go to manual", style = MaterialTheme.typography.titleLarge, modifier = Modifier.clickable { onManual() })
-            Text("Go to Finicity", style = MaterialTheme.typography.titleLarge, modifier = Modifier.clickable { onFinicity() })
+            Text(
+                "Go to manual",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.clickable { onManual() })
+            Text(
+                "Go to Finicity",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.clickable { onFinicity() })
         }
     }
 }

@@ -19,21 +19,20 @@ import thirdPartyEftGraph
 fun AppNavHost(
     navController: NavHostController,
     state: List<NavBackStackEntry>?,
-    onNavigate: (AppDestination) -> Unit,
-    startDestination: Any = AppDestination.BSLanding,
+    navigator: Navigator,
     modifier: Modifier = Modifier
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = navigator.startDestination,
         modifier = Modifier
     ) {
-        landingRoute(onNavigate, state)
-        firstPartyEftGraph(onNavigate, state) {
-            reviewRoute(onNavigate, state)
-            successRoute(onNavigate, state)
-            successSummaryRoute(onNavigate, state)
+        landingRoute(navigator, state)
+        firstPartyEftGraph(navigator, state) {
+            reviewRoute(navigator, state)
+            successRoute(navigator, state)
+            successSummaryRoute(navigator, state)
         }
-        thirdPartyEftGraph(onNavigate, state)
+        thirdPartyEftGraph(navigator, state)
     }
 }

@@ -2,19 +2,35 @@ package com.example.navigation_sample_app.screens
 
 import AppDestination
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import com.example.navigation_sample_app.Navigator
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun FTFScreen(
-    onNavigate: (AppDestination) -> Unit
+    navigator: Navigator
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     FTFScreen(
-        onClose = { onNavigate(
-            AppDestination.BSLanding
-        ) },
+        onClose = {
+            coroutineScope.launch {
+                navigator.navigate(
+
+                    AppDestination.BSLanding
+                )
+
+            }
+        },
         onNext = {},
-        onBack = { onNavigate(
-            AppDestination.BSLanding
-        ) }
+        onBack = {
+            coroutineScope.launch {
+                navigator.navigate(
+                    AppDestination.BSLanding
+                )
+            }
+        }
     )
 }
 

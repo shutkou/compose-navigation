@@ -11,6 +11,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.example.navigation_sample_app.Navigator
 import com.example.navigation_sample_app.screens.FTFScreen
 import com.example.navigation_sample_app.screens.Finicity1PScreen
 import com.example.navigation_sample_app.screens.FirstPartyEftScreen
@@ -69,14 +70,14 @@ sealed class AppDestination(
 /**
  *  The Landing route of the app.
  *
- *  @param onNavigate - Called when a navigation event is fired on the screen
+ *  @param navigator - Called when a navigation event is fired on the screen
  */
 fun NavGraphBuilder.landingRoute(
-    onNavigate: (AppDestination) -> Unit,
+    navigator: Navigator,
     currentNavState: List<NavBackStackEntry>?
 ) {
     composable<AppDestination.BSLanding> {
-        LandingScreen(onNavigate)
+        LandingScreen(navigator)
         DebugNavStateElement(currentNavState)
     }
 }
@@ -84,14 +85,14 @@ fun NavGraphBuilder.landingRoute(
 /**
  *  The Success Summary route of the app.
  *
- *  @param onNavigate - Called when a navigation event is fired on the screen
+ *  @param navigator - Called when a navigation event is fired on the screen
  */
 fun NavGraphBuilder.reviewRoute(
-    onNavigate: (AppDestination) -> Unit,
+    navigator: Navigator,
     currentNavState: List<NavBackStackEntry>?
 ) {
     composable<AppDestination.Review> {
-        ReviewScreen(onNavigate)
+        ReviewScreen(navigator)
         DebugNavStateElement(currentNavState)
     }
 }
@@ -99,14 +100,14 @@ fun NavGraphBuilder.reviewRoute(
 /**
  *  The Success route of the app.
  *
- *  @param onNavigate - Called when a navigation event is fired on the screen
+ *  @param navigator - Called when a navigation event is fired on the screen
  */
 fun NavGraphBuilder.successRoute(
-    onNavigate: (AppDestination) -> Unit,
+    navigator: Navigator,
     currentNavState: List<NavBackStackEntry>?
 ) {
     composable<AppDestination.Success> {
-        SuccessScreen(onNavigate)
+        SuccessScreen(navigator)
         DebugNavStateElement(currentNavState)
     }
 }
@@ -114,14 +115,14 @@ fun NavGraphBuilder.successRoute(
 /**
  *  The Success Summary route of the app.
  *
- *  @param onNavigate - Called when a navigation event is fired on the screen
+ *  @param navigator - Called when a navigation event is fired on the screen
  */
 fun NavGraphBuilder.successSummaryRoute(
-    onNavigate: (AppDestination) -> Unit,
+    navigator: Navigator,
     currentNavState: List<NavBackStackEntry>?
 ) {
     composable<AppDestination.SuccessSummary> {
-        SuccessSummaryScreen(onNavigate)
+        SuccessSummaryScreen(navigator)
         DebugNavStateElement(currentNavState)
     }
 }
@@ -133,27 +134,27 @@ fun NavGraphBuilder.successSummaryRoute(
  *  takes [AppDestination] as an argument to navigate to.
  */
 fun NavGraphBuilder.firstPartyEftGraph(
-    onNavigate: (AppDestination) -> Unit,
+    navigator: Navigator,
     currentNavState: List<NavBackStackEntry>?,
     nestedRoutes: NavGraphBuilder.() -> Unit
 ) {
     navigation<AppDestination.FirstPartyEftBase>(startDestination = AppDestination.FirstPartyEft) {
 
         composable<AppDestination.FirstPartyEft> {
-            FirstPartyEftScreen(onNavigate)
+            FirstPartyEftScreen(navigator)
             DebugNavStateElement(currentNavState)
         }
 
         composable<AppDestination.FirstPartyEftFTF> {
-            FTFScreen(onNavigate)
+            FTFScreen(navigator)
             DebugNavStateElement(currentNavState)
         }
         composable<AppDestination.FirstPartyEFTManual> {
-            Manual1PScreen(onNavigate)
+            Manual1PScreen(navigator)
             DebugNavStateElement(currentNavState)
         }
         composable<AppDestination.FirstPartyFinicity> {
-            Finicity1PScreen(onNavigate)
+            Finicity1PScreen(navigator)
             DebugNavStateElement(currentNavState)
         }
         nestedRoutes()
@@ -163,15 +164,15 @@ fun NavGraphBuilder.firstPartyEftGraph(
 /**
  *  The Third Party Eft graph of the app.
  *
- *  @param onNavigate - Called when a navigation event is fired on the screen
+ *  @param navigator - Called when a navigation event is fired on the screen
  */
 fun NavGraphBuilder.thirdPartyEftGraph(
-    onNavigate: (AppDestination) -> Unit,
+    navigator: Navigator,
     currentNavState: List<NavBackStackEntry>?
 ) {
     navigation<AppDestination.ThirdPartyEftBase>(startDestination = AppDestination.ThirdPartyEft) {
         composable<AppDestination.ThirdPartyEft> {
-            FTFScreen(onNavigate)
+            FTFScreen(navigator)
             DebugNavStateElement(currentNavState)
         }
     }

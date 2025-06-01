@@ -6,20 +6,34 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import com.example.navigation_sample_app.Navigator
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun SuccessScreen(
-    onNavigate: (AppDestination) -> Unit
+    navigator: Navigator
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
+
     SuccessScreen(
-        onClose = { onNavigate(
-            AppDestination.BSLanding
-        ) },
+        onClose = {
+            coroutineScope.launch {
+                navigator.navigate(
+                    AppDestination.BSLanding
+                )
+            }
+        },
         onTransfer = {},
-        onSummary = { onNavigate(
-            AppDestination.SuccessSummary
-        ) }
+        onSummary = {
+            coroutineScope.launch {
+                navigator.navigate(
+                    AppDestination.SuccessSummary
+                )
+            }
+        }
     )
 }
 
@@ -32,8 +46,14 @@ private fun SuccessScreen(
 ) {
     BaseScreen(title, onClose = onClose) {
         Column {
-            Text("Go to summary screen", style = MaterialTheme.typography.titleLarge, modifier = Modifier.clickable { onSummary() })
-            Text("Go to Transfer", style = MaterialTheme.typography.titleLarge, modifier = Modifier.clickable { onTransfer() })
+            Text(
+                "Go to summary screen",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.clickable { onSummary() })
+            Text(
+                "Go to Transfer",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.clickable { onTransfer() })
         }
     }
 }

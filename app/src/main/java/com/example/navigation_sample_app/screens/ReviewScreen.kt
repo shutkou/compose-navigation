@@ -2,27 +2,35 @@ package com.example.navigation_sample_app.screens
 
 import AppDestination
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import com.example.navigation_sample_app.Navigator
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun ReviewScreen(
-    onNavigate: (AppDestination) -> Unit
+    navigator: Navigator
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     ReviewScreen(
         onClose = {
-            onNavigate(
+            coroutineScope.launch {
+                navigator.navigate(
                 AppDestination.BSLanding
             )
-        },
+        }},
         onNext = {
-            onNavigate(
+            coroutineScope.launch {
+                navigator.navigate(
                 AppDestination.Success
             )
-        },
+        }},
         onBack = {
-            onNavigate(
+            coroutineScope.launch {
+                navigator.navigate(
                 AppDestination.Back
             )
-        }
+        }}
     )
 }
 

@@ -6,16 +6,26 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import com.example.navigation_sample_app.Navigator
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun SuccessSummaryScreen(
-    onNavigate: (AppDestination) -> Unit
+    navigator: Navigator
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
+
     SuccessSummaryScreen(
-        onClose = { onNavigate(
-            AppDestination.BSLanding
-        ) },
+        onClose = {
+            coroutineScope.launch {
+                navigator.navigate(
+                    AppDestination.BSLanding
+                )
+            }
+        },
         onTransfer = {}
     )
 }
@@ -28,8 +38,14 @@ private fun SuccessSummaryScreen(
 ) {
     BaseScreen(title, onClose = onClose) {
         Column {
-            Text("Go to BS Landing screen", style = MaterialTheme.typography.titleLarge, modifier = Modifier.clickable { onClose() })
-            Text("Go to Transfer", style = MaterialTheme.typography.titleLarge, modifier = Modifier.clickable { onTransfer() })
+            Text(
+                "Go to BS Landing screen",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.clickable { onClose() })
+            Text(
+                "Go to Transfer",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.clickable { onTransfer() })
         }
     }
 }

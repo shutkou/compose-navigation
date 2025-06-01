@@ -19,15 +19,22 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navState = rememberNavigationState()
+            val navigator = AppNavigator(startDestination = AppDestination.BSLanding)
+            ObserveNavEvents(flow = navigator.state) { event ->
+                when (event) {
+                    is NavigationEvent.Navigate -> navState.navigate(event.destination)
+                    NavigationEvent.Back -> navState.navController.popBackStack()
+                }
+            }
+
             NavigationsampleappTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
                     val state by navState.navController.currentBackStack.collectAsState(null)
 
                     AppNavHost(
                         navState.navController,
-                        state = state,
-                        onNavigate = navState::navigate,
-                        startDestination = AppDestination.BSLanding,
+                        state = state, // used for debugging - remove
+                        navigator = navigator,
                         modifier = Modifier
                     )
                 }

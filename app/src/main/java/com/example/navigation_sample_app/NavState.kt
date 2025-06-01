@@ -2,15 +2,19 @@ package com.example.navigation_sample_app
 
 import AppDestination
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.NavDestination
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 @Composable
 fun rememberNavigationState(
@@ -27,27 +31,42 @@ fun rememberNavigationState(
     }
 }
 
+@Composable
+fun <T> ObserveNavEvents(
+    flow: Flow<T>,
+    onEvent: (T) -> Unit
+) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(key1 = lifecycleOwner.lifecycle) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            withContext(Dispatchers.Main.immediate) {
+                flow.collect(onEvent)
+            }
+        }
+    }
+}
+
 
 class NavState(
     val navController: NavHostController
 ) {
 
-    private val previousDestination = mutableStateOf<NavDestination?>(null)
+//    private val previousDestination = mutableStateOf<NavDestination?>(null)
 
 
-    val currentDestination: NavDestination?
-        @Composable get() {
-            // Collect the currentBackStackEntryFlow as a state
-            val currentEntry = navController.currentBackStackEntryFlow
-                .collectAsState(initial = null)
-
-            // Fallback to previousDestination if currentEntry is null
-            return currentEntry.value?.destination.also { destination ->
-                if (destination != null) {
-                    previousDestination.value = destination
-                }
-            } ?: previousDestination.value
-        }
+//    val currentDestination: NavDestination?
+//        @Composable get() {
+//            // Collect the currentBackStackEntryFlow as a state
+//            val currentEntry = navController.currentBackStackEntryFlow
+//                .collectAsState(initial = null)
+//
+//            // Fallback to previousDestination if currentEntry is null
+//            return currentEntry.value?.destination.also { destination ->
+//                if (destination != null) {
+//                    previousDestination.value = destination
+//                }
+//            } ?: previousDestination.value
+//        }
 
 //    val currentTopLevelDestination: TopLevelDestination?
 //        @Composable get() {
@@ -118,6 +137,10 @@ class NavState(
         } else {
             navController.navigate(route)
         }
+    }
+
+    fun back() {
+        onBackClick()
     }
 
     private fun onBackClick() {
